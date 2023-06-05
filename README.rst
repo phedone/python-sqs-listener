@@ -70,6 +70,8 @@ Here is a basic code sample:
 - queue_url (str) - overrides ``queue`` parameter. Mostly useful for getting around `this bug <https://github.com/aws/aws-cli/issues/1715>`_ in the boto library
 - deserializer (function str -> dict) - Deserialization function that will be used to parse the message body. Set to python's ``json.loads`` by default.
 - aws_access_key, aws_secret_key (str) - for manually providing AWS credentials
+- region_name (str), endpoint_name (str) - to manually providing SQS endpoint region & url
+- run_while_idle (Callable) - a function that will be called on every "empty" run, as a heartbeat, to make sure it's still runing
 
 
 Running as a Daemon
