@@ -4,6 +4,7 @@ Created December 21st, 2016
 @version: 0.9.0
 @license: Apache
 """
+from typing import Callable
 
 # ================
 # start imports
@@ -66,6 +67,7 @@ class SqsListener(object):
         self._wait_time = kwargs.get('wait_time', 0)
         self._max_number_of_messages = kwargs.get('max_number_of_messages', 1)
         self._deserializer = kwargs.get("deserializer", json.loads)
+        self._run_while_idle = kwargs.get('run_while_idle', None)
 
         # must come last
         if boto3_session:
@@ -197,6 +199,8 @@ class SqsListener(object):
                             )
 
             else:
+                if isinstance(self._run_while_idle, Callable):
+                    self._run_while_idle()
                 time.sleep(self._poll_interval)
 
     def listen(self):
