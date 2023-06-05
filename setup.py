@@ -10,22 +10,22 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='pySqsListener',
+    name='cloudAgnosticPySqsListener',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.9.0',
+    version='0.9.2',
 
-    description='A simple Python SQS utility package',
+    description='A simple cloud agnostic Python SQS utility package',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/jegesh/python-sqs-listener',
+    url='https://github.com/phedone/python-sqs-listener',
 
     # Author details
-    author='Yaakov Gesher',
-    author_email='yaakov@gesher.net',
+    author='Tom HENEAULT',
+    author_email='tom@phedone.com',
 
     # Choose your license
     license='Apache Software License',

@@ -3,10 +3,7 @@ AWS SQS Listener
 
 .. image:: https://img.shields.io/pypi/v/pySqsListener.svg?style=popout
    :alt: PyPI
-   :target: https://github.com/jegesh/python-sqs-listener
-.. image:: https://img.shields.io/pypi/pyversions/pySqsListener.svg?style=popout
-   :alt: PyPI - Python Version
-   :target: https://pypi.org/project/pySqsListener/
+   :target: https://github.com/phedone/python-sqs-listener
 
 
 
@@ -17,7 +14,7 @@ queue, as well as sending messages to a queue.  Works with python 2.7 & 3.6+.
 Installation
 ~~~~~~~~~~~~
 
-``pip install pySqsListener``
+``pip install cloudAgnosticPySqsListener``
 
 Listening to a queue
 ~~~~~~~~~~~~~~~~~~~~
