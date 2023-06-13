@@ -13,7 +13,6 @@ Created December 22nd, 2016
 
 import json
 import logging
-import os
 
 import boto3
 import boto3.session
@@ -21,13 +20,14 @@ import boto3.session
 # ================
 # start class
 # ================
+from sqs_queue import SqsQueue
 
 sqs_logger = logging.getLogger('sqs_listener')
 
 
 class SqsLauncher(object):
 
-    def __init__(self, queue=None, queue_url=None, create_queue=False, visibility_timeout='600', serializer=json.dumps, **kwargs):
+    def __init__(self, queue: SqsQueue, create_queue=False, visibility_timeout='600', serializer=json.dumps, **kwargs):
         """
         :param queue: (str) name of queue to listen to
         :param queue_url: (str) url of queue to listen to
@@ -39,20 +39,23 @@ class SqsLauncher(object):
                                     for more information
         :param kwargs: options for fine tuning. see below
         """
-        if not any([queue, queue_url]):
+        if not queue.url:
             raise ValueError('Either `queue` or `queue_url` should be provided.')
-        
-        if (
-            not os.environ.get('AWS_ACCOUNT_ID', None) and 
-            not (boto3.Session().get_credentials().method in ['iam-role', 'assume-role', 'assume-role-with-web-identity'])
-        ):
-            raise EnvironmentError('Environment variable `AWS_ACCOUNT_ID` not set and no role found.')
-        
-        # new session for each instantiation
-        self._session = boto3.session.Session()
 
-        self._queue_name = queue
-        self._queue_url = queue_url
+        aws_access_key = queue.access_token or kwargs.get('aws_access_key', '')
+        aws_secret_key = queue.secret_token or kwargs.get('aws_secret_key', '')
+
+        if not aws_access_key or not aws_secret_key:
+            raise Exception("Access token and secret token are missing.")
+
+        # new session for each instantiation
+        self._session = boto3.Session(
+            aws_access_key_id=aws_access_key,
+            aws_secret_access_key=aws_secret_key
+        )
+
+        self._queue_name = queue.name
+        self._queue_url = queue.url
         self._serializer = serializer
 
         self._endpoint_name = kwargs.get('endpoint_name', None)
@@ -61,8 +64,8 @@ class SqsLauncher(object):
             self._client = self._session.client('sqs', region_name=self._region_name, endpoint_url=self._endpoint_name)
         else:
             self._client = self._session.client('sqs')
-            
-        if not queue_url:
+
+        if not self._queue_url:
             queues = self._client.list_queues(QueueNamePrefix=self._queue_name)
             exists = False
             for q in queues.get('QueueUrls', []):
@@ -83,7 +86,7 @@ class SqsLauncher(object):
                 else:
                     raise ValueError('No queue found with name ' + self._queue_name)
         else:
-            self._queue_name = self._get_queue_name_from_url(queue_url)
+            self._queue_name = self._get_queue_name_from_url(self._queue_url)
 
     def launch_message(self, message, **kwargs):
         """

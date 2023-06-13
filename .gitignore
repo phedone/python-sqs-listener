@@ -8,3 +8,4 @@ build
 dist
 pySqsListener.egg-info
 test_listen.py
+.env
