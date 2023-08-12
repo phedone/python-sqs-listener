@@ -1,11 +1,18 @@
-[WIP]
-DOC TO BE UPDATED TO LATEST CHANGES
-
 Cloud agnostic SQS Listener
-----------------
+----------------------------
 
-This package takes care of the boilerplate involved in listening to an SQS
-queue, as well as sending messages to a queue.  Works with python 2.7 & 3.6+.
+| [WIP] DOC TO BE UPDATED TO LATEST CHANGES
+ This package takes care of the boilerplate involved in listening to an SQS
+ queue, as well as sending messages to a queue.  Works with python 2.7 & 3.6+.
+
+Publish new version
+~~~~~~~~~~~~~~~~~~~~
+
+- (if not yet done) Configure your ~/.pypirc : https://packaging.python.org/en/latest/specifications/pypirc/
+- Install build tool : ``python3 -m pip install --upgrade build && python3 -m pip install --upgrade twine``
+- Update version number in setup.py
+- ``python3 -m build && python3 -m twine upload --repository cloudAgnosticPySqsListener dist/*``
+
 
 Installation
 ~~~~~~~~~~~~

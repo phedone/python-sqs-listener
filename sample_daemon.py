@@ -8,7 +8,7 @@ from sqs_listener import SqsListener
 
 
 class MyListener(SqsListener):
-    def handle_message(self, body, attributes, messages_attributes):
+    def handle_message(self, body, attributes, messages_attributes, message_id):
         pass
         # run your code here
 

@@ -174,6 +174,7 @@ class SqsListener(object):
                 for m in messages['Messages']:
                     receipt_handle = m['ReceiptHandle']
                     m_body = m['Body']
+                    m_id = m['MessageId']
                     message_attribs = None
                     attribs = None
 
@@ -193,9 +194,9 @@ class SqsListener(object):
                                 QueueUrl=self._queue_url,
                                 ReceiptHandle=receipt_handle
                             )
-                            self.handle_message(deserialized, message_attribs, attribs)
+                            self.handle_message(deserialized, message_attribs, attribs, message_id=m_id)
                         else:
-                            self.handle_message(deserialized, message_attribs, attribs)
+                            self.handle_message(deserialized, message_attribs, attribs, message_id=m_id)
                             self._client.delete_message(
                                 QueueUrl=self._queue_url,
                                 ReceiptHandle=receipt_handle
@@ -244,12 +245,13 @@ class SqsListener(object):
         logger.addHandler(sh)
 
     @abstractmethod
-    def handle_message(self, body, attributes, messages_attributes):
+    def handle_message(self, body, attributes, messages_attributes, message_id: str):
         """
         Implement this method to do something with the SQS message contents
         :param body: dict
         :param attributes: dict
         :param messages_attributes: dict
+        :param message_id: str
         :return:
         """
         return

@@ -54,7 +54,8 @@ def test_send_message_to_scaleway(queue: SqsQueue):
 
 def test_listen_queue_on_scaleway(queue: SqsQueue, should_throw: bool = False):
     class MyListener(SqsListener):
-        def handle_message(self, body, attributes, messages_attributes):
+        def handle_message(self, body, attributes, messages_attributes, message_id):
+            print(f"MessageId : {message_id}")
             print(json.dumps(body))
             listener.stop_listening()
             if should_throw:
@@ -66,7 +67,8 @@ def test_listen_queue_on_scaleway(queue: SqsQueue, should_throw: bool = False):
 
 def test_listen_dead_queue_on_scaleway(queue: SqsQueue):
     class MyListener(SqsListener):
-        def handle_message(self, body, attributes, messages_attributes):
+        def handle_message(self, body, attributes, messages_attributes, message_id):
+            print(f"MessageId : {message_id}")
             print(json.dumps(body))
             listener.stop_listening()
 
