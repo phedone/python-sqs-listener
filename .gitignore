@@ -1,3 +1,12 @@
 *.egg*
 *pycache*
 build/
+venv
+.mypy_cache
+.vscode
+.idea
+*.pyc
+.DS_Store
+dist
+test_listen.py
+.env
