@@ -11,18 +11,18 @@ from sqs_queue import SqsQueue
 load_dotenv()
 
 # Read environment variables
-dead_queue_name = os.getenv('DEAD_QUEUE_NAME')
-dead_queue_url = os.getenv('DEAD_QUEUE_URL')
-dead_queue_access_token = os.getenv('DEAD_QUEUE_ACCESS_TOKEN')
-dead_queue_secret_token = os.getenv('DEAD_QUEUE_SECRET_TOKEN')
+dead_queue_name = os.getenv('DEAD_QUEUE_NAME', "default_d")
+dead_queue_url = os.getenv('DEAD_QUEUE_URL', "http://localhost:4566/000000000000/test_queue_d")
+dead_queue_access_token = os.getenv('DEAD_QUEUE_ACCESS_TOKEN', "test")
+dead_queue_secret_token = os.getenv('DEAD_QUEUE_SECRET_TOKEN', "test")
 
-queue_name = os.getenv('QUEUE_NAME')
-queue_url = os.getenv('QUEUE_URL')
-queue_access_token = os.getenv('QUEUE_ACCESS_TOKEN')
-queue_secret_token = os.getenv('QUEUE_SECRET_TOKEN')
+queue_name = os.getenv('QUEUE_NAME', "default")
+queue_url = os.getenv('QUEUE_URL', "http://localhost:4566/000000000000/test_queue")
+queue_access_token = os.getenv('QUEUE_ACCESS_TOKEN', "test")
+queue_secret_token = os.getenv('QUEUE_SECRET_TOKEN', "test")
 
-endpoint_url = os.getenv('ENDPOINT_URL')
-endpoint_region = os.getenv('ENDPOINT_REGION')
+endpoint_url = os.getenv('ENDPOINT_URL', "http://localhost:4566/")
+endpoint_region = os.getenv('ENDPOINT_REGION', "ap-northeast-1")
 
 
 def setup_queue() -> SqsQueue:
@@ -61,7 +61,7 @@ def test_listen_queue_on_scaleway(queue: SqsQueue, should_throw: bool = False):
             if should_throw:
                 raise Exception("Big error")
 
-    listener = MyListener(queue, region_name=endpoint_region, endpoint_name=endpoint_url)
+    listener = MyListener(queue, region_name=endpoint_region, endpoint_name=endpoint_url, interval=1)
     listener.listen()
 
 
@@ -72,7 +72,7 @@ def test_listen_dead_queue_on_scaleway(queue: SqsQueue):
             print(json.dumps(body))
             listener.stop_listening()
 
-    listener = MyListener(dead_queue_from_queue(queue), region_name=endpoint_region, endpoint_name=endpoint_url)
+    listener = MyListener(dead_queue_from_queue(queue), region_name=endpoint_region, endpoint_name=endpoint_url, interval=1)
     listener.listen()
 
 
