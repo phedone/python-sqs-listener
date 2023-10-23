@@ -10,6 +10,11 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
+def get_reqs(file="requirements.txt"):
+    with open(file) as f:
+        return [s.rstrip("\n") for s in f.readlines()]
+    return []
+
 setup(
     name='cloudAgnosticPySqsListener',
 
@@ -67,6 +72,6 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['boto3']
+    install_requires=get_reqs()
 
 )

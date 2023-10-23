@@ -164,3 +164,41 @@ Contributing
 ~~~~~~~~~~~~
 
 Fork the repo and make a pull request.
+
+Dev setup
+~~~~~~~~~~~~
+Will need to pre install docker, aws cli and aws local. Then configure the local aws
+::
+
+    aws configure
+    # id = test
+    # access key = test
+    # secret key = test
+    # region = ap-northeast-1
+
+Important: it will not work with different region name
+
+Create local aws and queue
+::
+
+    make localq
+    make createq
+
+Expect the following output
+::
+
+     % make createq
+     awslocal --endpoint-url=http://localhost:4566 sqs create-queue --queue-name test_queue
+     {
+        "QueueUrl": "http://localhost:4566/000000000000/test_queue"
+     }
+     awslocal --endpoint-url=http://localhost:4566 sqs create-queue --queue-name test_queue_d
+     {
+        "QueueUrl": "http://localhost:4566/000000000000/test_queue_d"
+     }
+
+Run linter and integration test
+::
+
+    make lint
+    make test
