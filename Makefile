@@ -1,3 +1,6 @@
+local_build:
+	python setup.py bdist_wheel
+
 localq:
 	docker run --rm -d -it -p 4566:4566 -e AWS_ACCESS_KEY=test -e AWS_SECRET_ACCESS_KEY=test -p 4510-4559:4510-4559  localstack/localstack
 
